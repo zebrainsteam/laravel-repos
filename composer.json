@@ -1,0 +1,23 @@
+{
+    "name": "zebrainsteam/laravel-repos",
+    "type": "package",
+    "require": {
+        "prozorov/repositories": ">=1.0.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zebrains team",
+            "email": "a.mizaushev@zebrains.team"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "files": [
+            "helpers.php"
+        ],
+        "psr-4": {
+            "Zebrainsteam\\LaravelRepos\\": "src/"
+        }
+    }
+}
