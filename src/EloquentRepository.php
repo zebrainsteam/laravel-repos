@@ -41,7 +41,7 @@ class EloquentRepository extends AbstractRepository
 
     /**
      * @param array $filter
-     * @return Model|object|static|null
+     * @return Model|object|Builder|null
      */
     protected function doFirst(array $filter)
     {
@@ -51,7 +51,7 @@ class EloquentRepository extends AbstractRepository
     /**
      * @param int $id
      * @param array|null $select
-     * @return Model|Collection|static[]|static|null
+     * @return Model|Collection|Builder[]|Builder|null
      */
     protected function doGetById(int $id, array $select = null)
     {
@@ -61,7 +61,7 @@ class EloquentRepository extends AbstractRepository
     /**
      * @param int $id
      * @param array|null $select
-     * @return Model|Collection|static|static[]
+     * @return Model|Collection|Builder|Builder[]
      *
      * @throws ModelNotFoundException
      */
