@@ -19,8 +19,7 @@ class EloquentAwareResolver implements ResolverInterface
             throw $exception;
         }
 
-        $modelClass = new $className;
-        if (!$modelClass instanceof Model) {
+        if (in_array(Model::class, class_implements($className))) {
             $exception = new CouldNotResolve("The passed argument must be an instance of " . Model::class);
             $exception->setRepositoryCode($className);
 
