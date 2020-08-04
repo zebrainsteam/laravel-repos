@@ -1,0 +1,112 @@
+<?php
+
+namespace {{ namespace }};
+
+use Prozorov\Repositories\AbstractRepository;
+
+class {{ class }} extends AbstractRepository
+{
+    /**
+     * @param $params
+     * @return iterable|null
+     */
+    protected function doGet($params): ?iterable
+    {
+        // TODO: Implement doGet() method.
+    }
+
+    /**
+     * @param array $filter
+     */
+    protected function doFirst(array $filter)
+    {
+        // TODO: Implement doFirst() method.
+    }
+
+    /**
+     * @param int $id
+     * @param array|null $select
+     */
+    protected function doGetById(int $id, array $select = null)
+    {
+        // TODO: Implement doGetById() method.
+    }
+
+    /**
+     * @param int $id
+     * @param array|null $select
+     */
+    protected function doGetByIdOrFail(int $id, array $select = null)
+    {
+        // TODO: Implement doGetByIdOrFail() method.
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function doCreate(array $data)
+    {
+        // TODO: Implement doCreate() method.
+    }
+
+    /**
+     * @param $model
+     * @param array $data
+     * @return void
+     */
+    protected function doUpdate($model, array $data): void
+    {
+        // TODO: Implement doUpdate() method.
+    }
+
+    /**
+     * @param $model
+     * @return void
+     */
+    protected function doDelete($model): void
+    {
+        // TODO: Implement doDelete() method.
+    }
+
+    /**
+     * @param array $filter
+     * @return bool
+     */
+    protected function doExists(array $filter): bool
+    {
+        // TODO: Implement doExists() method.
+    }
+
+    /**
+     * @param array $filter
+     * @return int
+     */
+    protected function doCount(array $filter = []): int
+    {
+        // TODO: Implement doCount() method.
+    }
+
+    /**
+     * @return void
+     */
+    protected function doOpenTransaction(): void
+    {
+        // TODO: Implement doOpenTransaction() method.
+    }
+
+    /**
+     * @return void
+     */
+    protected function doCommitTransaction(): void
+    {
+    // TODO: Implement doCommitTransaction() method.
+    }
+
+    /**
+     * @return void
+     */
+    protected function doRollbackTransaction(): void
+    {
+        // TODO: Implement doRollbackTransaction() method.
+    }
+}
