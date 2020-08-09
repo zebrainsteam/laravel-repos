@@ -2,10 +2,13 @@
 
 namespace Zebrainsteam\LaravelRepos\Console;
 
-use Illuminate\Console\GeneratorCommand;
-
 class RepositoryInterfaceMakeCommand extends GeneratorCommand
 {
+    /**
+     * @var string
+     */
+    protected $defaultNamespacePrefix = 'Contracts\Repository';
+
     /**
      * The console command name.
      *
@@ -54,16 +57,5 @@ class RepositoryInterfaceMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         return __DIR__.'/stubs/repository-interface.stub';
-    }
-
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace.'\Contracts\Repository';
     }
 }

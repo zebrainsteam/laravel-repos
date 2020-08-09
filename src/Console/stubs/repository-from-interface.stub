@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use Prozorov\Repositories\Contracts\RepositoryInterface;
+use {{ interface }} as RepositoryInterface;
 
 class {{ class }} implements RepositoryInterface
 {

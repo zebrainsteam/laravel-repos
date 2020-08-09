@@ -2,7 +2,8 @@
 
 namespace Zebrainsteam\LaravelRepos\Console;
 
-use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class RepositoryMakeCommand extends GeneratorCommand
@@ -13,6 +14,28 @@ class RepositoryMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:repository';
+
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $signature = 'make:repository {name} {--w|with-interface} {interface?} {--i|from-interface}';
+
+    /**
+     * @var string
+     */
+    protected $stub;
+
+    /**
+     * @var string
+     */
+    protected $defaultNamespacePrefix = 'Repositories';
+
+    /**
+     * @var string
+     */
+    protected $interfaceClassName = null;
 
     /**
      * The console command description.
@@ -36,15 +59,33 @@ class RepositoryMakeCommand extends GeneratorCommand
     protected $composer;
 
     /**
-     * Determine if the class already exists.
+     * Execute the console command.
      *
-     * @param  string  $rawName
-     * @return bool
+     * @return bool|null
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function alreadyExists($rawName)
+    public function handle()
     {
-        return class_exists($rawName) ||
-            $this->files->exists($this->getPath($this->qualifyClass($rawName)));
+        $name = $this->getNameInput();
+        $interfaceName = $this->argument('interface');
+        $withInterface = $this->option('with-interface');
+        $fromInterface = $this->option('from-interface');
+
+        if (!empty($withInterface)) {
+            // create repository from abstract class by implementing interface
+            $this->stub = '/stubs/repository-from-abstract-with-interface.stub';
+            $this->createInterface($name, $interfaceName);
+        } elseif (!empty($fromInterface)) {
+            // create repository by implementing interface
+            $this->stub = '/stubs/repository-from-interface.stub';
+            $this->createInterface($name, $interfaceName);
+        } else {
+            // create repository from abstract class
+            $this->stub = '/stubs/repository-from-abstract.stub';
+        }
+
+        parent::handle();
     }
 
     /**
@@ -54,26 +95,7 @@ class RepositoryMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $stub = null;
-
-        if ($this->option('from-interface')) {
-            $stub = '/stubs/repository-from-interface.stub';
-        }
-
-        $stub = $stub ?? '/stubs/repository.stub';
-
-        return __DIR__.$stub;
-    }
-
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace.'\Repositories';
+        return __DIR__.$this->stub;
     }
 
     /**
@@ -85,6 +107,99 @@ class RepositoryMakeCommand extends GeneratorCommand
     {
         return [
             ['from-interface', 'i', InputOption::VALUE_NONE, 'Generate a repository via interface inheritance'],
+            ['with-interface', 'w', InputOption::VALUE_NONE, 'Generate an interface and inherited repository'],
+        ];
+    }
+
+    /**
+     * Parse the interface class name and format according to the root namespace.
+     *
+     * @param $name
+     * @return string
+     */
+    protected function qualifyInterfaceClass($name)
+    {
+        $interfaceName = $name;
+        $name = ltrim($name, '\\/');
+
+        $rootNamespace = $this->rootNamespace();
+
+        if (Str::startsWith($name, $rootNamespace)) {
+            return $name;
+        }
+
+        $name = str_replace('/', '\\', $name);
+
+        return $this->qualifyClass(
+            $this->getInterfaceNamespace(trim($rootNamespace, '\\'),  $interfaceName).'\\'.$name
+        );
+    }
+
+    /**
+     * Get namespace for interface class.
+     *
+     * @param $rootNamespace
+     * @param $interfaceName
+     * @return string
+     */
+    protected function getInterfaceNamespace($rootNamespace, $interfaceName)
+    {
+        $interfaceNamespace = $rootNamespace;
+        if ($interfaceName[0] != '/') {
+            $interfaceNamespace .= '\Contracts\Repository';
+        }
+
+        return $interfaceNamespace;
+    }
+
+    /**
+     * Create interface for new repository
+     *
+     * @param string $repositoryName
+     * @param string|null $interfaceName
+     * @return int
+     */
+    protected function createInterface(string $repositoryName, $interfaceName)
+    {
+        if (empty($interfaceName)) {
+            $interfaceName = $repositoryName . 'Contract';
+        }
+        $this->interfaceClassName = $this->qualifyInterfaceClass($interfaceName);
+        return Artisan::call('make:repository-interface', [
+            'name' => $interfaceName
+        ]);
+    }
+
+    /**
+     * Build the class with the given name.
+     *
+     * @param string $name
+     * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function buildClass($name)
+    {
+        if (!empty($this->interfaceClassName)) {
+            $replace = $this->buildInterfaceReplacements();
+
+            return str_replace(
+                array_keys($replace), array_values($replace), parent::buildClass($name)
+            );
+        } else {
+            return parent::buildClass($name);
+        }
+    }
+
+    /**
+     * Build the replacements for interface.
+     *
+     * @return null[]|string[]
+     */
+    protected function buildInterfaceReplacements()
+    {
+        return [
+            '{{ interface }}' => $this->interfaceClassName,
+            '{{interface}}' => $this->interfaceClassName,
         ];
     }
 }
