@@ -4,6 +4,9 @@
     "require": {
         "prozorov/repositories": ">=1.0.0"
     },
+    "require-dev": {
+        "orchestra/testbench": "^5.2.0"
+    },
     "license": "MIT",
     "authors": [
         {
@@ -13,11 +16,13 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "files": [
-            "helpers.php"
-        ],
         "psr-4": {
             "Zebrainsteam\\LaravelRepos\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zebrainsteam\\LaravelRepos\\Tests\\": "tests/"
         }
     }
 }
