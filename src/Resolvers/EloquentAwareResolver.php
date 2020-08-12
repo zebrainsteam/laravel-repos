@@ -10,6 +10,9 @@ use Zebrainsteam\LaravelRepos\EloquentRepository;
 
 class EloquentAwareResolver implements ResolverInterface
 {
+    /**
+     * @inheritDoc
+     */
     public function resolve(string $className): RepositoryInterface
     {
         if (!class_exists($className)) {

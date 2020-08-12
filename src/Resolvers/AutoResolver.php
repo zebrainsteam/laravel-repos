@@ -9,6 +9,9 @@ use Prozorov\Repositories\Resolvers\SelfResolver;
 
 class AutoResolver implements ResolverInterface
 {
+    /**
+     * @inheritDoc
+     */
     public function resolve(string $className): RepositoryInterface
     {
         $resolver = new ChainResolver([
