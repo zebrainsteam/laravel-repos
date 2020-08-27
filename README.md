@@ -4,6 +4,30 @@
 1. предоставляет консольные команды для генерации интерфейсов и репозиториев;
 2. адаптирует библиотеку для работы с Eloquent-моделями.
 
+## Установка
+Добавление пакета в проект
+```
+composer require zebrainsteam/laravel-repos
+```
+
+Регистрация сервис-провайдера в `config/app.php`
+```
+'providers' => [
+
+    ...
+
+    /*
+     * Application Service Providers...
+     */
+    ...
+    \Zebrainsteam\LaravelRepos\LaravelReposServiceProvider::class,
+
+],
+```
+Публикация конфигурационного файла с помощью консольной команды
+```
+php artisan vendor:publish --provider="Zebrainsteam\LaravelRepos\LaravelReposServiceProvider"
+```
  
 ## Консольные команды для генерации интерфейсов и репозиториев
 Создание интерфейса, наследуемого от базового интерфейса `Prozorov\Repositories\Contracts\RepositoryInterface`:
@@ -96,4 +120,46 @@ $userRepository = $resolver->resolve(User::class); //создаст экземп
 
 $carRepository = $resolver->resolve(Car::class); //создаст экземпляр EloquentRepository
 
+```
+
+## Работа с фабрикой репозиториев
+
+С репозиториями и резолверами можно работать отдельно, однако лучшим способом создания репозиториев является использование `LaravelRepositoryFactory`. Для этого должен быть опубликован конфигурационный файл `config/repositories.php` (см. инструкцию по установке пакета выше). В нем настраивается перечень резолверов и параметров, которые будут использованы при создании репозитория:
+```
+<?php
+
+return [
+    'common' => [
+        'resolvers' => [
+            'Prozorov\Repositories\Resolvers\SelfResolver',
+            'Zebrainsteam\LaravelRepos\Resolvers\EloquentAwareResolver',
+            'Prozorov\Repositories\Resolvers\ContainerAwareResolver',
+        ],
+        'bindings' => [
+            'users' => 'App\User',
+            ...
+        ],
+    ],
+    'custom1' => [
+        'resolvers' => [
+            ...
+        ],
+        'bindings' => [
+            'anotherAlias' => ...,
+        ],
+    ],
+    ...
+];
+```
+Если в группе 'resolvers' указано несколько резолверов, то они будут объединены в `Prozorov\Repositories\Resolvers\ChainResolver` (этот класс позволяет использовать цепочку из загрузчиков; он принимает в конструктор массив из других классов-резолверов, и для разрешения репозитория последовательно обращается к каждому из них, пока какой-нибудь не разрешит репозиторий)
+С учетом таких настроек создавать репозитории можно следующим образом:
+
+```
+$commonFactory = LaravelRepositoryFactory::init(); //по умолчанию берутся настройки из группы "common" и возвращается синглтон-класс фабрики
+$usersRepository = $repositoryFactory->getRepository('users');
+$luckyUser = $usersRepository->getById(13);
+
+$customFactory = LaravelRepositoryFactory::init('custom1');
+$anotherRepository = $repositoryFactory->getRepository('anotherAlias');
+...
 ```
