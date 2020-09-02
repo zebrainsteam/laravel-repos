@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/?branch=master)
+
 # Адаптер библиотеки [artem-prozorov/repos](https://github.com/artem-prozorov/repos) для Laravel
 
 Дополняет библиотеку [artem-prozorov/repos](https://github.com/artem-prozorov/repos) рядом возможностей, предоставляемых инструментами Laravel. В частности:
