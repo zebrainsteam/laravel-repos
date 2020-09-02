@@ -1,8 +1,9 @@
 {
     "name": "zebrainsteam/laravel-repos",
     "type": "package",
+    "description": "Laravel adapter for the repository library",
     "require": {
-        "prozorov/repositories": "1.0.0"
+        "prozorov/repositories": "^1"
     },
     "require-dev": {
         "orchestra/testbench": "^5.2.0"
