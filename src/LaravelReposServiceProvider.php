@@ -5,10 +5,10 @@ namespace Zebrainsteam\LaravelRepos;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
-use Prozorov\Repositories\Contracts\ResolverInterface;
-use Prozorov\Repositories\RepositoryFactory;
-use Prozorov\Repositories\Resolvers\ChainResolver;
-use Prozorov\Repositories\Resolvers\ContainerAwareResolver;
+use Repositories\Core\Contracts\ResolverInterface;
+use Repositories\Core\RepositoryFactory;
+use Repositories\Core\Resolvers\ChainResolver;
+use Repositories\Core\Resolvers\ContainerAwareResolver;
 use Zebrainsteam\LaravelRepos\Console\RepositoryInterfaceMakeCommand;
 use Zebrainsteam\LaravelRepos\Console\RepositoryMakeCommand;
 

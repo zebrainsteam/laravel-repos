@@ -2,7 +2,7 @@
 
 namespace Zebrainsteam\LaravelRepos\Tests\Support;
 
-use Prozorov\Repositories\Contracts\RepositoryInterface;
+use Repositories\Core\Contracts\RepositoryInterface;
 
 class SelfRepository implements RepositoryInterface
 {
@@ -14,15 +14,23 @@ class SelfRepository implements RepositoryInterface
     {
     }
 
-    public function getById(int $id, array $select = null)
+    public function getById($id, array $select = null)
     {
     }
 
-    public function getByIdOrFail(int $id, array $select = null)
+    public function getByIdOrFail($id, array $select = null)
     {
     }
 
     public function create(array $data)
+    {
+    }
+
+    public function insert(iterable $data): void
+    {
+    }
+
+    public function insertWithTransaction(iterable $data): void
     {
     }
 

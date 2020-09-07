@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a559a8b8d319d148af93eafc6ec1372b",
+    "content-hash": "ddccf1cd45872da734cf598259fb6d98",
     "packages": [
         {
             "name": "brick/math",
@@ -1067,16 +1067,16 @@
         },
         {
             "name": "prozorov/repositories",
-            "version": "dev-master",
+            "version": "v2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zebrainsteam/repos.git",
-                "reference": "179c39040324cd2cebf9709f1878323176167ba6"
+                "reference": "ffab3ba2793d023da3b3f7932edb3bd4ed58558c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zebrainsteam/repos/zipball/179c39040324cd2cebf9709f1878323176167ba6",
-                "reference": "179c39040324cd2cebf9709f1878323176167ba6",
+                "url": "https://api.github.com/repos/zebrainsteam/repos/zipball/ffab3ba2793d023da3b3f7932edb3bd4ed58558c",
+                "reference": "ffab3ba2793d023da3b3f7932edb3bd4ed58558c",
                 "shasum": ""
             },
             "require": {
@@ -1093,7 +1093,7 @@
                     "helpers.php"
                 ],
                 "psr-4": {
-                    "Prozorov\\Repositories\\": "src/"
+                    "Repositories\\Core\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1107,7 +1107,7 @@
                 }
             ],
             "description": "Can be static",
-            "time": "2020-07-31T19:21:54+00:00"
+            "time": "2020-09-01T20:21:06+00:00"
         },
         {
             "name": "psr/container",

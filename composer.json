@@ -2,7 +2,7 @@
     "name": "zebrainsteam/laravel-repos",
     "type": "package",
     "require": {
-        "prozorov/repositories": ">=1.0.0"
+        "prozorov/repositories": "^2"
     },
     "require-dev": {
         "orchestra/testbench": "^5.2.0"

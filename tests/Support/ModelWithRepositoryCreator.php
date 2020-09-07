@@ -3,8 +3,8 @@
 namespace Zebrainsteam\LaravelRepos\Tests\Support;
 
 use Illuminate\Database\Eloquent\Model;
-use Prozorov\Repositories\Contracts\HasRepositoryInterface;
-use Prozorov\Repositories\Contracts\RepositoryInterface;
+use Repositories\Core\Contracts\HasRepositoryInterface;
+use Repositories\Core\Contracts\RepositoryInterface;
 
 class ModelWithRepositoryCreator extends Model implements HasRepositoryInterface
 {

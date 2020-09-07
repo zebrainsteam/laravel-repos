@@ -1,6 +1,6 @@
-# Адаптер библиотеки [artem-prozorov/repos](https://github.com/artem-prozorov/repos) для Laravel
+# Адаптер библиотеки [zebrainsteam/repos](https://github.com/zebrainsteam/repos) для Laravel
 
-Дополняет библиотеку [artem-prozorov/repos](https://github.com/artem-prozorov/repos) рядом возможностей, предоставляемых инструментами Laravel. В частности:
+Дополняет библиотеку [zebrainsteam/repos](https://github.com/zebrainsteam/repos) рядом возможностей, предоставляемых инструментами Laravel. В частности:
 1. предоставляет консольные команды для генерации интерфейсов и репозиториев;
 2. адаптирует библиотеку для работы с Eloquent-моделями.
 
@@ -30,18 +30,18 @@ php artisan vendor:publish --provider="Zebrainsteam\LaravelRepos\LaravelReposSer
 ```
  
 ## Консольные команды для генерации интерфейсов и репозиториев
-Создание интерфейса, наследуемого от базового интерфейса `Prozorov\Repositories\Contracts\RepositoryInterface`:
+Создание интерфейса, наследуемого от базового интерфейса `Repositories\Core\Contracts\RepositoryInterface`:
 
 ```
 php artisan make:repository-interface <MyInterfaceName>
 ```
 
-Создание репозитория, наследуемого от абстрактного класса `Prozorov\Repositories\AbstractRepository`:
+Создание репозитория, наследуемого от абстрактного класса `Repositories\Core\AbstractRepository`:
 
 ```
 php artisan make:repository <MyRepositoryName>
 ```
-Создание репозитория `<MyRepositoryName>`, наследуемого от абстрактного класса `Prozorov\Repositories\AbstractRepository`, и реализуемого им интерфейса с автоматической генерацией имени `<MyRepositoryName>Contract` (интерфейс будет расширять `Prozorov\Repositories\Contracts\RepositoryInterface`):
+Создание репозитория `<MyRepositoryName>`, наследуемого от абстрактного класса `Repositories\Core\AbstractRepository`, и реализуемого им интерфейса с автоматической генерацией имени `<MyRepositoryName>Contract` (интерфейс будет расширять `Repositories\Core\Contracts\RepositoryInterface`):
 
 ```
 php artisan make:repository <MyRepositoryName> --with-interface
@@ -53,7 +53,7 @@ php artisan make:repository <MyRepositoryName> --with-interface
 php artisan make:repository <MyRepositoryName> --with-interface <MyInterfaceName>
 ```
 
-Создание репозитория `<MyRepositoryName>` и реализуемого им интерфейса с автоматической генерацией имени `<MyRepositoryName>Contract` (интерфейс будет расширять `Prozorov\Repositories\Contracts\RepositoryInterface`):
+Создание репозитория `<MyRepositoryName>` и реализуемого им интерфейса с автоматической генерацией имени `<MyRepositoryName>Contract` (интерфейс будет расширять `Repositories\Core\Contracts\RepositoryInterface`):
 
 ```
 php artisan make:repository <MyRepositoryName> --from-interface
@@ -71,7 +71,7 @@ php artisan make:repository <MyRepositoryName> --from-interface <MyInterfaceName
 В библиотеку добавлены репозиторий для работы с Eloquent-моделями `Zebrainsteam\LaravelRepos\EloquentRepository`, а также  два резолвера для работы с ним: `Zebrainsteam\LaravelRepos\Resolvers\EloquentAwareResolver` и `Zebrainsteam\LaravelRepos\Resolvers\AutoResolver`.
 
 #### EloquentRepository
- унаследован от абстрактного класса `Prozorov\Repositories\AbstractRepository` и содержит реализацию всех его методов посредством штатных инструментов фреймворка по работе с моделью.
+ унаследован от абстрактного класса `Repositories\Core\AbstractRepository` и содержит реализацию всех его методов посредством штатных инструментов фреймворка по работе с моделью.
  
 #### EloquentAwareResolver
 позволяет автоматически создавать репозиторий типа `EloquentRepository` для заданного класса модели, если последняя унаследована от `Illuminate\Database\Eloquent\Model`:
@@ -96,14 +96,14 @@ $redCarExists = $carRepository->exists(['color' => 'red']);
 ```
 
 #### AutoResolver
-позволяет автоматически создавать репозиторий для заданного класса модели, если последняя содержит в себе конструктор репозитория (реализует интерфейс `Prozorov\Repositories\Contracts\HasRepositoryInterface`) либо 
+позволяет автоматически создавать репозиторий для заданного класса модели, если последняя содержит в себе конструктор репозитория (реализует интерфейс `Repositories\Core\Contracts\HasRepositoryInterface`) либо 
 унаследована от `Illuminate/Database/Eloquent/Model`:
 ```
-class User implements Prozorov\Repositories\Contracts\HasRepositoryInterface
+class User implements Repositories\Core\Contracts\HasRepositoryInterface
 {
     ...
 
-    public static function getRepository(): Prozorov\Repositories\Contracts\RepositoryInterface;
+    public static function getRepository(): Repositories\Core\Contracts\RepositoryInterface;
     {
         return new UsersSuperRepository();
     }
@@ -124,15 +124,15 @@ $carRepository = $resolver->resolve(Car::class); //создаст экземпл
 
 ## Работа с фабрикой репозиториев
 
-С репозиториями и резолверами можно работать отдельно, однако лучшим способом создания репозиториев является использование `Prozorov\Repositories\RepositoryFactory`. Для этого должен быть опубликован конфигурационный файл `config/repositories.php` (см. инструкцию по установке пакета выше). В нем настраивается перечень резолверов и параметров, которые будут использованы при создании репозитория:
+С репозиториями и резолверами можно работать отдельно, однако лучшим способом создания репозиториев является использование `Repositories\Core\RepositoryFactory`. Для этого должен быть опубликован конфигурационный файл `config/repositories.php` (см. инструкцию по установке пакета выше). В нем настраивается перечень резолверов и параметров, которые будут использованы при создании репозитория:
 ```
 <?php
 
 return [
     'resolvers' => [
-        'Prozorov\Repositories\Resolvers\SelfResolver',
+        'Repositories\Core\Resolvers\ExistingRepositoryResolver',
         'Zebrainsteam\LaravelRepos\Resolvers\EloquentAwareResolver',
-        'Prozorov\Repositories\Resolvers\ContainerAwareResolver',
+        'Repositories\Core\Resolvers\ContainerAwareResolver',
         ...
     ],
     'bindings' => [
@@ -142,7 +142,7 @@ return [
     ],
 ];
 ```
-Если в группе 'resolvers' указано несколько резолверов, то они будут объединены в `Prozorov\Repositories\Resolvers\ChainResolver` (этот класс позволяет использовать цепочку из загрузчиков; он принимает в конструктор массив из других классов-резолверов, и для разрешения репозитория последовательно обращается к каждому из них, пока какой-нибудь не разрешит репозиторий)
+Если в группе 'resolvers' указано несколько резолверов, то они будут объединены в `Repositories\Core\Resolvers\ChainResolver` (этот класс позволяет использовать цепочку из загрузчиков; он принимает в конструктор массив из других классов-резолверов, и для разрешения репозитория последовательно обращается к каждому из них, пока какой-нибудь не разрешит репозиторий)
 С учетом таких настроек создавать репозитории можно следующим образом:
 
 ```
