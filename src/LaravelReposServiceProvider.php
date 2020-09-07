@@ -34,14 +34,14 @@ class LaravelReposServiceProvider extends ServiceProvider
             return new ContainerAwareResolver($app);
         });
 
-        if (empty(config('repositories.common.resolvers'))
-            || empty(config('repositories.common.bindings'))
+        if (empty(config('repositories.resolvers'))
+            || empty(config('repositories.bindings'))
         ) {
             throw new \Exception('Invalid repository config');
         }
 
         $this->app->singleton(RepositoryFactory::class, function ($app) {
-            foreach (config('repositories.common.resolvers') as $resolverClass) {
+            foreach (config('repositories.resolvers') as $resolverClass) {
                 $resolver = App::get($resolverClass);
 
                 if ($resolver instanceof ResolverInterface) {
@@ -53,7 +53,7 @@ class LaravelReposServiceProvider extends ServiceProvider
 
             $resolver = new ChainResolver($resolvers);
 
-            return new RepositoryFactory($resolver, config('repositories.common.bindings'));
+            return new RepositoryFactory($resolver, config('repositories.bindings'));
         });
     }
 }

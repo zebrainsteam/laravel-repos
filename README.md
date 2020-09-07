@@ -124,42 +124,33 @@ $carRepository = $resolver->resolve(Car::class); //создаст экземпл
 
 ## Работа с фабрикой репозиториев
 
-С репозиториями и резолверами можно работать отдельно, однако лучшим способом создания репозиториев является использование `LaravelRepositoryFactory`. Для этого должен быть опубликован конфигурационный файл `config/repositories.php` (см. инструкцию по установке пакета выше). В нем настраивается перечень резолверов и параметров, которые будут использованы при создании репозитория:
+С репозиториями и резолверами можно работать отдельно, однако лучшим способом создания репозиториев является использование `Prozorov\Repositories\RepositoryFactory`. Для этого должен быть опубликован конфигурационный файл `config/repositories.php` (см. инструкцию по установке пакета выше). В нем настраивается перечень резолверов и параметров, которые будут использованы при создании репозитория:
 ```
 <?php
 
 return [
-    'common' => [
-        'resolvers' => [
-            'Prozorov\Repositories\Resolvers\SelfResolver',
-            'Zebrainsteam\LaravelRepos\Resolvers\EloquentAwareResolver',
-            'Prozorov\Repositories\Resolvers\ContainerAwareResolver',
-        ],
-        'bindings' => [
-            'users' => 'App\User',
-            ...
-        ],
+    'resolvers' => [
+        'Prozorov\Repositories\Resolvers\SelfResolver',
+        'Zebrainsteam\LaravelRepos\Resolvers\EloquentAwareResolver',
+        'Prozorov\Repositories\Resolvers\ContainerAwareResolver',
+        ...
     ],
-    'custom1' => [
-        'resolvers' => [
-            ...
-        ],
-        'bindings' => [
-            'anotherAlias' => ...,
-        ],
+    'bindings' => [
+        'users' => 'App\User',
+        'cars' => 'App\Cars',
+        ...
     ],
-    ...
 ];
 ```
 Если в группе 'resolvers' указано несколько резолверов, то они будут объединены в `Prozorov\Repositories\Resolvers\ChainResolver` (этот класс позволяет использовать цепочку из загрузчиков; он принимает в конструктор массив из других классов-резолверов, и для разрешения репозитория последовательно обращается к каждому из них, пока какой-нибудь не разрешит репозиторий)
 С учетом таких настроек создавать репозитории можно следующим образом:
 
 ```
-$commonFactory = LaravelRepositoryFactory::init(); //по умолчанию берутся настройки из группы "common" и возвращается синглтон-класс фабрики
+$repositoryFactory = App::get(RepositoryFactory::class); //возвращается синглтон-класс фабрики
 $usersRepository = $repositoryFactory->getRepository('users');
 $luckyUser = $usersRepository->getById(13);
 
-$customFactory = LaravelRepositoryFactory::init('custom1');
-$anotherRepository = $repositoryFactory->getRepository('anotherAlias');
+$carsRepository = $repositoryFactory->getRepository('cars');
+$firstRedCar = $carsRepository->first(['color' => 'red']);
 ...
 ```
