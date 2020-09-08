@@ -1,6 +1,7 @@
 {
     "name": "zebrainsteam/laravel-repos",
     "type": "package",
+    "description": "Laravel adapter for the repository library",
     "require": {
         "prozorov/repositories": "^2"
     },

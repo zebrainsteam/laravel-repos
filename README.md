@@ -1,3 +1,6 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/?branch=master)
+![PHP Composer](https://github.com/zebrainsteam/laravel-repos/workflows/PHP%20Composer/badge.svg)
+
 # Адаптер библиотеки [zebrainsteam/repos](https://github.com/zebrainsteam/repos) для Laravel
 
 Дополняет библиотеку [zebrainsteam/repos](https://github.com/zebrainsteam/repos) рядом возможностей, предоставляемых инструментами Laravel. В частности:
