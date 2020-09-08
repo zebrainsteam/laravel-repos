@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
-use Prozorov\Repositories\AbstractRepository;
+use Repositories\Core\AbstractRepository;
 
 class EloquentRepository extends AbstractRepository
 {
@@ -77,6 +77,16 @@ class EloquentRepository extends AbstractRepository
     protected function doCreate(array $data)
     {
         return $this->modelClass::create($data);
+    }
+
+    /**
+     * @param iterable $data
+     */
+    protected function doInsert(iterable $data): void
+    {
+        foreach ($data as $item) {
+            $this->modelClass::create($item);
+        }
     }
 
     /**

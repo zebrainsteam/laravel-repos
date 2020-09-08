@@ -3,9 +3,9 @@
 namespace Zebrainsteam\LaravelRepos\Resolvers;
 
 use Illuminate\Database\Eloquent\Model;
-use Prozorov\Repositories\Contracts\RepositoryInterface;
-use Prozorov\Repositories\Contracts\ResolverInterface;
-use Prozorov\Repositories\Exceptions\CouldNotResolve;
+use Repositories\Core\Contracts\ResolverInterface;
+use Repositories\Core\Exceptions\CouldNotResolve;
+use Repositories\Core\Contracts\RepositoryInterface;
 use Zebrainsteam\LaravelRepos\EloquentRepository;
 
 class EloquentAwareResolver implements ResolverInterface

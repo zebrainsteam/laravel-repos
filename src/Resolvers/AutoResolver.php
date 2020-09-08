@@ -2,10 +2,10 @@
 
 namespace Zebrainsteam\LaravelRepos\Resolvers;
 
-use Prozorov\Repositories\Contracts\RepositoryInterface;
-use Prozorov\Repositories\Contracts\ResolverInterface;
-use Prozorov\Repositories\Resolvers\ChainResolver;
-use Prozorov\Repositories\Resolvers\SelfResolver;
+use Repositories\Core\Contracts\RepositoryInterface;
+use Repositories\Core\Contracts\ResolverInterface;
+use Repositories\Core\Resolvers\ChainResolver;
+use Repositories\Core\Resolvers\ExistingRepositoryResolver;
 
 class AutoResolver implements ResolverInterface
 {
@@ -15,7 +15,7 @@ class AutoResolver implements ResolverInterface
     public function resolve(string $className): RepositoryInterface
     {
         $resolver = new ChainResolver([
-            new SelfResolver(),
+            new ExistingRepositoryResolver(),
             new EloquentAwareResolver()
         ]);
 

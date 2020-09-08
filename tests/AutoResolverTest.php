@@ -13,13 +13,6 @@ use InvalidArgumentException;
 
 class AutoResolverTest extends TestCase
 {
-    protected function getPackageProviders($app)
-    {
-        return [
-            'Zebrainsteam\LaravelRepos\LaravelReposServiceProvider'
-        ];
-    }
-
     /**
      * @test
      */
