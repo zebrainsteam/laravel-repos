@@ -6,7 +6,7 @@
         "prozorov/repositories": "^2"
     },
     "require-dev": {
-        "orchestra/testbench": "^5.2.0"
+        "orchestra/testbench": "^5.19"
     },
     "license": "MIT",
     "authors": [
