@@ -2,9 +2,9 @@
 
 return [
     'resolvers' => [
-        'Prozorov\Repositories\Resolvers\SelfResolver',
+        'Repositories\Core\Resolvers\ExistingRepositoryResolver',
         'Zebrainsteam\LaravelRepos\Resolvers\EloquentAwareResolver',
-        'Prozorov\Repositories\Resolvers\ContainerAwareResolver',
+        'Repositories\Core\Resolvers\ContainerAwareResolver',
     ],
     'bindings' => [
         'users' => 'App\User',
