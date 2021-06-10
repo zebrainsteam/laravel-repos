@@ -34,26 +34,28 @@ class LaravelReposServiceProvider extends ServiceProvider
             return new ContainerAwareResolver($app);
         });
 
-        if (empty(config('repositories.resolvers'))
-            || empty(config('repositories.bindings'))
-        ) {
-            throw new \Exception('Invalid repository config');
-        }
-
-        $this->app->singleton(RepositoryFactory::class, function ($app) {
-            foreach (config('repositories.resolvers') as $resolverClass) {
-                $resolver = App::get($resolverClass);
-
-                if ($resolver instanceof ResolverInterface) {
-                    $resolvers[] = $resolver;
-                } else {
-                    throw new \Exception('Invalid resolver class ' . $resolverClass);
-                }
+        if (!empty(config('repositories'))) {
+            if (empty(config('repositories.resolvers'))
+                || empty(config('repositories.bindings'))
+            ) {
+                throw new \Exception('Invalid repository config');
             }
 
-            $resolver = new ChainResolver($resolvers);
+            $this->app->singleton(RepositoryFactory::class, function ($app) {
+                foreach (config('repositories.resolvers') as $resolverClass) {
+                    $resolver = App::get($resolverClass);
 
-            return new RepositoryFactory($resolver, config('repositories.bindings'));
-        });
+                    if ($resolver instanceof ResolverInterface) {
+                        $resolvers[] = $resolver;
+                    } else {
+                        throw new \Exception('Invalid resolver class ' . $resolverClass);
+                    }
+                }
+
+                $resolver = new ChainResolver($resolvers);
+
+                return new RepositoryFactory($resolver, config('repositories.bindings'));
+            });
+        }
     }
 }
