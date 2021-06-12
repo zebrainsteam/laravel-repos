@@ -4,7 +4,7 @@
 # Адаптер библиотеки [zebrainsteam/repos](https://github.com/zebrainsteam/repos) для Laravel
 
 Дополняет библиотеку [zebrainsteam/repos](https://github.com/zebrainsteam/repos) рядом возможностей, предоставляемых инструментами Laravel. В частности:
-1. предоставляет консольные команды для генерации интерфейсов и репозиториев;
+1. предоставляет консольные команды для генерации интерфейсов, репозиториев и конфигурации;
 2. адаптирует библиотеку для работы с Eloquent-моделями.
 
 ## Установка
@@ -13,7 +13,7 @@
 composer require zebrainsteam/laravel-repos
 ```
 
-Регистрация сервис-провайдера в `config/app.php`
+Регистрация сервис-провайдера и фасада в `config/app.php`
 ```
 'providers' => [
 
@@ -24,6 +24,14 @@ composer require zebrainsteam/laravel-repos
      */
     ...
     \Zebrainsteam\LaravelRepos\LaravelReposServiceProvider::class,
+
+],
+
+'aliases' => [
+
+    ...
+
+    'RepositoryFactory' => Zebrainsteam\LaravelRepos\Facades\RepositoryFactory::class,
 
 ],
 ```
@@ -149,11 +157,10 @@ return [
 С учетом таких настроек создавать репозитории можно следующим образом:
 
 ```
-$repositoryFactory = App::get(RepositoryFactory::class); //возвращается синглтон-класс фабрики
-$usersRepository = $repositoryFactory->getRepository('users');
+$usersRepository = RepositoryFactory::getRepository('users');
 $luckyUser = $usersRepository->getById(13);
 
-$carsRepository = $repositoryFactory->getRepository('cars');
+$carsRepository = RepositoryFactory::getRepository('cars');
 $firstRedCar = $carsRepository->first(['color' => 'red']);
 ...
 ```
