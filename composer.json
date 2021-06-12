@@ -3,7 +3,8 @@
     "type": "package",
     "description": "Laravel adapter for the repository library",
     "require": {
-        "prozorov/repositories": "^2"
+        "prozorov/repositories": "^2",
+        "illuminate/support": "^6.0|^7.0|^8.0"
     },
     "require-dev": {
         "orchestra/testbench": "^5.19"

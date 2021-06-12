@@ -24,7 +24,7 @@ class LaravelReposServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/config/repositories.php' => config_path('repositories.php'),
+            $this->getConfigFile() => config_path('repositories.php'),
         ]);
     }
 
@@ -41,7 +41,7 @@ class LaravelReposServiceProvider extends ServiceProvider
                 throw new \Exception('Invalid repository config');
             }
 
-            $this->app->singleton(RepositoryFactory::class, function ($app) {
+            $this->app->singleton('repository-factory', function () {
                 foreach (config('repositories.resolvers') as $resolverClass) {
                     $resolver = App::get($resolverClass);
 
@@ -58,4 +58,13 @@ class LaravelReposServiceProvider extends ServiceProvider
             });
         }
     }
+
+    /**
+     * @return string
+     */
+    protected function getConfigFile(): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'repositories.php';
+    }
+
 }
