@@ -1,5 +1,6 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/?branch=master)
-![PHP Composer](https://github.com/zebrainsteam/laravel-repos/workflows/PHP%20Composer/badge.svg)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Code Coverage](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/zebrainsteam/laravel-repos/?branch=master)
 
 # Адаптер библиотеки [zebrainsteam/repos](https://github.com/zebrainsteam/repos) для Laravel
 
