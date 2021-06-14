@@ -11,7 +11,7 @@
     </php>
     <testsuites>
         <testsuite name="Library Program Test Suite">
-            <directory suffix=".php">./tests/</directory>
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

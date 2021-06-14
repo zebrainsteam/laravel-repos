@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Zebrainsteam\LaravelRepos;
 
 use Illuminate\Support\Facades\App;
@@ -25,38 +24,44 @@ class LaravelReposServiceProvider extends ServiceProvider
 
         $this->publishes([
             $this->getConfigFile() => config_path('repositories.php'),
-        ]);
+        ], 'config');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function register()
     {
+        $this->mergeConfigFrom(
+            $this->getConfigFile(),
+            'repositories'
+        );
+
         $this->app->singleton(ContainerAwareResolver::class, function ($app) {
             return new ContainerAwareResolver($app);
         });
 
-        if (!empty(config('repositories'))) {
-            if (empty(config('repositories.resolvers'))
-                || empty(config('repositories.bindings'))
-            ) {
-                throw new \Exception('Invalid repository config');
+        if (empty(config('repositories.resolvers'))
+            || empty(config('repositories.bindings'))
+        ) {
+            throw new \Exception('Invalid repository config');
+        }
+
+        $this->app->singleton('repository-factory', function () {
+            foreach (config('repositories.resolvers') as $resolverClass) {
+                $resolver = App::get($resolverClass);
+
+                if ($resolver instanceof ResolverInterface) {
+                    $resolvers[] = $resolver;
+                } else {
+                    throw new \Exception('Invalid resolver class ' . $resolverClass);
+                }
             }
 
-            $this->app->singleton('repository-factory', function () {
-                foreach (config('repositories.resolvers') as $resolverClass) {
-                    $resolver = App::get($resolverClass);
+            $resolver = new ChainResolver($resolvers);
 
-                    if ($resolver instanceof ResolverInterface) {
-                        $resolvers[] = $resolver;
-                    } else {
-                        throw new \Exception('Invalid resolver class ' . $resolverClass);
-                    }
-                }
-
-                $resolver = new ChainResolver($resolvers);
-
-                return new RepositoryFactory($resolver, config('repositories.bindings'));
-            });
-        }
+            return new RepositoryFactory($resolver, config('repositories.bindings'));
+        });
     }
 
     /**
@@ -66,5 +71,4 @@ class LaravelReposServiceProvider extends ServiceProvider
     {
         return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'repositories.php';
     }
-
 }
